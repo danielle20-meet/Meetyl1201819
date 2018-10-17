@@ -1,0 +1,30 @@
+import turtle
+listof=["blue","black","red","yellow","green"]
+numc=0
+turtle.speed(0)
+turtle.pensize(5)
+turtle.penup()
+turtle.goto(-100,100)
+turtle.pendown()
+turtle.color(listof[numc])
+for i in range (3): #im drowimg the 3 top circels
+	turtle.pendown()
+	turtle.color(listof[numc])
+	turtle.pendown()
+	turtle.circle(50)
+	turtle.penup()
+	numc+=1
+	turtle.forward(110)
+turtle.goto(-40,40)
+turtle.color(listof[numc])
+turtle.pendown()
+turtle.circle(50,93)
+turtle.penup()
+turtle.circle(50,17)
+turtle.pendown()
+turtle.circle(50,65)
+turtle.penup()
+turtle.circle(50,25)
+turtle.pendown()
+turtle.circle(50,60)
+turtle.mainloop()
