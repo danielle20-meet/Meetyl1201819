@@ -8,10 +8,10 @@ def tree(n):
 		turtle.forward(n)
 		turtle.right(20)
 		tree(n-10)
-		turtle.forward(-n)
 		turtle.left(40)
 		tree(n-10)
 		turtle.right(20)
+		turtle.backward(n)
 
 
 
