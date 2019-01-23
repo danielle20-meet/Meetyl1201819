@@ -8,8 +8,7 @@ from turtle import Turtle
 turtle.colormode(255)
 from lab6b import Rectangle
 import random
-
-class Square(Rectange):
+class Square(Rectangle):
 	"""gets a size"""
 	def __init__(self, size):
 		Rectangle.__init__(self,size,size)
@@ -19,7 +18,7 @@ class Square(Rectange):
 		b=random.randint(1,255)
 		c=random.randint(1,255)
 		self.color(a,b,c)
-s1=Square(10)
+s1=Square(100)
 s1.random_color()
 turtle.mainloop()
 

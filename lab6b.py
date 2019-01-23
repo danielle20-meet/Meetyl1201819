@@ -1,3 +1,4 @@
+#2
 import turtle 
 from turtle import Turtle 
 class Rectangle(Turtle):
@@ -8,4 +9,3 @@ class Rectangle(Turtle):
 		self.shape("Rectangle")
 		self.color("light blue")
 r1=Rectangle(50,100)
-turtle.mainloop()
