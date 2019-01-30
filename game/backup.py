@@ -15,7 +15,7 @@ turtle.listen()
 turtle.tracer(0,0)
 turtle.hideturtle()
 turtle.bgpic("sea.gif")
-colors=["blue","red","green","yellow","black","white","orange","purple","hot pink","aquamarine","crimson"] #list of colors the turtle can be
+colors=["blue","red","green","yellow","black","white","orange","purple","hot pink","aquamarine","crimson"]
 Running=True
 Sleep=0.0077
 score=0
@@ -25,7 +25,7 @@ screen_h=turtle.getcanvas().winfo_height()//2
 turtle.penup()
 turtle.goto(screen_w,screen_h)
 turtle.pensize(5)
-for i in range (4): #drawing a square
+for i in range (4):
 	turtle.right(90)
 	turtle.pendown()
 	turtle.forward(screen_w*2)
@@ -35,14 +35,14 @@ turtle.goto(-100,450)
 turtle.write("Welcome!",move=False,align="left",font=("Arial",24,"normal"))
 turtle.goto(-250,420)
 turtle.write("Your score is:" + str(score)+ " high score: "+str(h_scor),move=False,align="left",font=("Arial",24,"normal"))
-num_balls=4
+num_balls=5
 max_r=35
 min_r=10
 min_dx=-2
 max_dx=2
 min_dy=-5
 max_dy=5
-color1 = simpledialog.askstring("Input", "What is your favorite color?", parent=tk.Tk().withdraw())
+color1 = simpledialog.askstring("Input", "What is your favorite color?", parent=tk.Tk())
 def ran_ball():	
 	x=random.randint(-screen_w+max_r,screen_w-max_r)#the other balls
 	y=random.randint(-screen_h+max_r,screen_h-max_r)
@@ -60,8 +60,6 @@ def ran_ball():
 
 
 M_ball= Ball(10,10,dx=5,dy=10,r=30,color=color1) #the ball we control
-List_my_balls=[] #that's the list of the balls we control
-List_my_balls.append(M_ball) 
 Balls=[]
 for x in range(num_balls):
 	ball1=ran_ball()
@@ -99,76 +97,46 @@ def check_all_balls():
 
 def m_ball_col():
 	for other in (Balls):
-		for my_b in List_my_balls:
-			if check_col(other,my_b):
-				if other.r>my_b.r:
-					global score,h_scor
+		if check_col(other,M_ball):
+			if other.r>M_ball.r:
+				global score,h_scor
+				turtle.undo()
+				turtle.write(" GAME OVER! your score is: " + str(score)+" high score "+str(h_scor),move=False,align="left",font=("Arial",24,"normal"))#if your ball hit a bigger one
+				score=-1
+				answer = simpledialog.askstring("Input", "Do you want to play again?", parent=tk.Tk())
+				if answer=="yes":
 					turtle.undo()
-					turtle.write(" GAME OVER! your score is: " + str(score)+" high score "+str(h_scor),move=False,align="left",font=("Arial",24,"normal"))#if your ball hit a bigger one
-					score=-1
-					answer = simpledialog.askstring("Input", "Do you want to play again?", parent=tk.Tk().withdraw())
-					if answer=="yes":
-						turtle.undo()
-						score+=1
-						for i in range (len(List_my_balls)): #making all of my balls restart
-							List_my_balls[i].r=10
-							List_my_balls[i].shapesize(List_my_balls[i].r/10)
-							List_my_balls[i].goto(400-(20*i),400-(20*i))
-						for i in Balls:
-							if i.xcor()>=350:
-								i.goto(100,100)
-						turtle.write("Your score is:" + str(score)+" high score "+str(h_scor),move=False,align="left",font=("Arial",24,"normal"))
-						s= turtle.getscreen()
-						s.onkey(space_bar,"space")
-					else:
-						quit()
-					return False
-				elif my_b.r>other.r: #if your ball hit a smaller one
-					if my_b.r>100: #in order that your ball w'ont be 2 big
-						my_b.r=20
-					my_b.r+=10
-					score+=1#because you ate a ball
-					if h_scor<score:
-						h_scor=score
-					turtle.undo()
-					my_b.r=30
-					turtle.color(random.choice(colors))
-					turtle.write("Your score is:" + str(score)+" high score "+str(h_scor),move=False,align="left",font=("Arial",24,"normal"))#update score
-					my_b.shapesize(my_b.r/10)
-					other.goto(100,100)
-					return True
+					M_ball.goto(400,400)
+					score+=1
+					M_ball.r=20
+					M_ball.shapesize(M_ball.r/10)
+					for i in Balls:
+						if i.xcor()>=350:
+							i.goto(100,100)
+					turtle.write("Your score is:" + str(score)+" high score "+str(h_scor),move=False,align="left",font=("Arial",24,"normal"))
+				return False
+			elif M_ball.r>other.r: #if your ball hit a smaller one
+				if M_ball.r>100: #in order that your ball w'ont be 2 big
+					M_ball.r=20
+				M_ball.r+=2
+				score+=1
+				if h_scor<score:
+					h_scor=score
+				turtle.undo()
+				turtle.color(random.choice(colors))
+				turtle.write("Your score is:" + str(score)+" high score "+str(h_scor),move=False,align="left",font=("Arial",24,"normal"))
+				M_ball.shapesize(M_ball.r/10)
+				other.goto(100,100)
+				return True
 def movearound(event):
-	for i in range (len(List_my_balls)):
-		if i==0:
-			List_my_balls[i].goto(event.x-475,405-event.y)
-		elif i%2==0: #happend if isn't zero
-			List_my_balls[i].goto(event.x-475+20*i,405-event.y+20*-i)
-		elif i%3==0: #happend if isn't zero
-			List_my_balls[i].goto(event.x-475+20*i,405-event.y+20*i)
-		else:
-			List_my_balls[i].goto(event.x-475+20*-i,405-event.y+20*-i)
+	M_ball.goto(event.x-475,405-event.y)
 turtle.getcanvas().bind("<Motion>", movearound)
-def space_bar():
-	global List_my_balls
-	numb=len(List_my_balls)
-	pr_rad=List_my_balls[0].r
-	pr_x=List_my_balls[0].xcor()
-	pr_y=List_my_balls[0].ycor()
-	new_ball=Ball(pr_x-pr_rad+10,pr_y-pr_rad,5,5,pr_rad,"black")
-	List_my_balls.append(new_ball)
 
-
-
-
-s= turtle.getscreen()
-s.onkey(space_bar,"space")
 turtle.update()
-turtle.listen()
 while score>=0:
 	move_balls(Balls)
 	turtle.update()
 	check_all_balls()
 	m_ball_col()
 	time.sleep(0.001)
-
 turtle.mainloop()
